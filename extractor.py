@@ -4,14 +4,43 @@ def clean_arr(word_array):
 
     for i in range(len(arr)):
         arr[i] = arr[i].strip("\n")
-    
- 
     return arr
+
+def MD(words,extracted):
+
+    ind = 0
+
+    with open("output.md","w") as file:
+        file.write("# Before processing")
+        file.write("\n\n")
+        for w in words:
+            file.write(w)
+            file.write(" ")
+        file.write("\n\n# After processing: ")
+        file.write("\n\n")
+        for i in range(len(words)):
+
+            if(words[i] == extracted[ind]):
+                ind += 1
+                file.write(" **")
+                file.write(words[i])
+                file.write("** ")
+            else:
+                file.write(words[i])
+                file.write(" ")
+            
+        
 
 def main():
 
     PATH = input("Please input the relative file path:\t")
-    x = int(input("What words do you want to extract from the file?\n1.Nouns\n2.Verbs\n\nPick one:\t"))
+    try:
+        x = int(input("What words do you want to extract from the file?\n1.Nouns\n2.Verbs\n\nPick one:\t"))
+    except Exception as e:
+        print("Cannot parse letters.\n\nExiting program")
+        exit()
+    
+    
     words = ""
     # taken from https://www.thoughtco.com/common-suffixes-in-english-1692725
     suffixes_noun = ["acy","al","ance","ence","dom","er","or","ism","ist","ity","ty","ment","ness","ship","sion","tion"]
@@ -55,10 +84,13 @@ def main():
 
         words = words.split()
         #print(words)
-        extraction = [[i for i in words if i in test_cases]]
+        extraction = [i for i in words if i in test_cases]
+        extraction = [i for i in extraction if len(i) > 1]
         print("Words found:\n")
-        for i in range(len(extraction)):
-            print(extraction[i])
-main()
 
-    
+        for i in range(len(extraction)):
+            print("Word {}: \t{}".format(i,extraction[i]))
+
+        MD(words,extraction)
+
+main()  
