@@ -1,4 +1,4 @@
-from cgi import test
+
 
 
 def clean_arr(word_array):
